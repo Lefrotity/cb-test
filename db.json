@@ -1,0 +1,6 @@
+{
+  "posts": [
+    { "id": 1, "title": "Title 1", "img": null },
+    { "id": 2, "title": "Title 2", "img": null }
+  ]
+}

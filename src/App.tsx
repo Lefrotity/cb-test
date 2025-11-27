@@ -1,9 +1,10 @@
-import { SimpleFileUploader } from "./components/ui/simple-file-uploader";
+import { Home } from "@/pages/home";
 
+// imagine here an advanced routing system
 function App() {
   return (
     <>
-      <SimpleFileUploader onFileUpload={() => {}} />
+      <Home />
     </>
   );
 }

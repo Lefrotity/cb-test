@@ -3,6 +3,7 @@ import { imageToBase64FromFile } from "@/utils/imageToBase64FromFile";
 
 import type { UseMutationResult } from "@tanstack/react-query";
 import type { CreatePostDTO } from "@/features/posts/api/create-post";
+import { useNotification } from "@/hooks/useNotification";
 
 type useHandleCreateSubmitProps = {
   createPostMutation: UseMutationResult<any, Error, CreatePostDTO, unknown>;
@@ -11,6 +12,8 @@ type useHandleCreateSubmitProps = {
 export const useHandleCreateSubmit = ({
   createPostMutation,
 }: useHandleCreateSubmitProps) => {
+  const { notify } = useNotification();
+
   const checkData = ({
     title,
     file,
@@ -33,7 +36,7 @@ export const useHandleCreateSubmit = ({
     console.log({ title, file });
 
     if (!checkData({ title, file })) {
-      console.log("fill all fields");
+      notify({ text: "Пожалуйста, заполните все поля (название и картинка)" });
 
       return;
     }

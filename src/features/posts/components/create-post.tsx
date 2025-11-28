@@ -12,15 +12,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SimpleFileUploader } from "@/components/ui/simple-file-uploader";
 import { useCreatePost } from "../api/create-post";
-import { useState } from "react";
+import { useState, type ReactElement } from "react";
 import { useHandleCreateSubmit } from "../hooks/useHandleCreateSubmit";
 import type { NullableFile } from "@/types/api";
+import { useNotification } from "@/hooks/useNotification";
 
 type CreatePostProps = {
-  className?: string;
+  trigger: ReactElement;
 };
 
-export const CreatePost = ({ className }: CreatePostProps) => {
+export const CreatePost = ({ trigger }: CreatePostProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [file, setFile] = useState<NullableFile>(null);
 
@@ -33,10 +34,12 @@ export const CreatePost = ({ className }: CreatePostProps) => {
     setFile(uploadedFile[0]);
   };
 
+  const { notify } = useNotification();
+
   const createPostMutation = useCreatePost({
     mutationConfig: {
       onSuccess: () => {
-        console.log("post created");
+        notify({ text: "Пост создан!" });
         closeDialog();
       },
     },
@@ -46,11 +49,7 @@ export const CreatePost = ({ className }: CreatePostProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button className={className} variant="outline">
-          Создать Пост
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={(e) => handleSubmit(e, file)}>
           <DialogHeader>
@@ -61,7 +60,7 @@ export const CreatePost = ({ className }: CreatePostProps) => {
               <Label className="my-3" htmlFor="name-1">
                 Название
               </Label>
-              <Input id="name-1" name="name" required />
+              <Input id="name-1" name="name" />
             </div>
           </div>
 
